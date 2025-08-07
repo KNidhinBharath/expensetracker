@@ -28,8 +28,8 @@ export default function Content() {
       {
         title : "",
         price : "",
-        selectedCategory : "",
-        selectedDate : ""
+        category : "",
+        date : ""
       }
     )
 
@@ -101,8 +101,8 @@ export default function Content() {
       setFormdata({
         title: "",
         price: "",
-        selectedCategory: "",
-        selectedDate: ""
+        category: "",
+        date: ""
       });
 
       updateExpensesAndBalance();
@@ -265,10 +265,12 @@ export default function Content() {
                 
               </div>
               <div className='dialogbtns'>
-                <button onClick={() => {
+                <button
+                  type="submit"
+                  onClick={() => {
                   const success = addBalance(inputAmount);
                   setBalanceModal(!success);
-                  }}>Add Balance</button>
+                  }}>+ Add Income</button>
                 <button onClick={() => setBalanceModal(false)}>Cancel</button>
               </div>
            </ReactModal>
@@ -292,7 +294,7 @@ export default function Content() {
               <input
                 id="title"
                 type="text"
-                name='title'
+                name="title"
                 value={formData.title}
                 placeholder='Title'
                 onChange={handleChange}
@@ -303,7 +305,7 @@ export default function Content() {
               <input
                 id="price"
                 type="number"
-                name='price'
+                name="price"
                 value={formData.price}
                 placeholder='Price'
                 onChange={handleChange}
@@ -313,8 +315,8 @@ export default function Content() {
               <label htmlFor="category">Select Category</label>
               <select
                 id="category"
-                value={formData.selectedCategory}
-                name='selectedCategory'
+                value={formData.category}
+                name="category"
                 onChange={handleChange}
                 required
               >
@@ -328,8 +330,8 @@ export default function Content() {
               <input
                 id="date"
                 type="date"
-                name='selectedDate'
-                value={formData.selectedDate}
+                name="date"
+                value={formData.date}
                 onChange={handleChange}
                 required
               />
@@ -337,6 +339,7 @@ export default function Content() {
 
             <div className="dialogbtns">
               <button
+               type="submit"
                 style={{
                   backgroundColor : "#F4BB4A",
                   color:'white'
@@ -347,15 +350,16 @@ export default function Content() {
                   const success = addExpense(
                     formData.title,
                     formData.price,
-                    formData.selectedCategory,
+                    formData.category,
                     formData.selectedDate
                   );
                   setExpenseModal(!success);
                 }}
               >
-                Add Expense
+                + Add Expense
               </button>
               <button
+                 
                  onClick={() => setExpenseModal(false)}
                  style={{
                   color: 'black',
