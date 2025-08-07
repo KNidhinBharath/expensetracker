@@ -17,11 +17,12 @@ export default function Content() {
     const [isExpenseModal , setExpenseModal] = useState(false)
     const [inputAmount,setInput] = useState("")
     const [expenseList,setExpenseList] = useState([])
-    const [expense,setExpense] = useState(0)
+    const [totExpenses,setTotExpenses] = useState(0)
+    const [indExpense,setIndExpenses] = useState([])
     const {enqueueSnackbar} = useSnackbar()
     const [balance,setBalance] = useState(() => {
       const WalletBalance = localStorage.getItem("WalletBalance")
-      return WalletBalance ? JSON.parse(WalletBalance) : "0";
+      return WalletBalance ? JSON.parse(WalletBalance) : 5000;
     })
     const [formData , setFormdata] = useState( 
       {
@@ -68,57 +69,88 @@ export default function Content() {
       }
     }
 
-    const addExpense = (title,price,category,date) => {
-      const existingExpenses = JSON.parse(localStorage.getItem("expenses")) || []
-      const newExpenses = {
-        title : `${title}`,
-        price : `${price}`,
-        category : `${category}`,
-        date : `${date}`
+ const addExpense = (title, price, category, date) => {
+      if (!title || !price || !category || !date) {
+        enqueueSnackbar("Fill all details", { variant: 'error' });
+        return false;
       }
-      existingExpenses.push(newExpenses)
 
-      if(title && price && category && date){
-        localStorage.setItem("expenses",JSON.stringify(existingExpenses))
-        const totalExpenses = existingExpenses.reduce((acc,item) => acc + parseFloat(item.price) , 0)
-        setExpense(totalExpenses)
-        setFormdata({
-          title : "",
-          price : "",
-          selectedCategory : "",
-          selectedDate : ""
-        })
-        
-        return true
+      const newExpenseAmount = parseFloat(price);
+      const currentBalance = parseFloat(balance);
+
+      if (newExpenseAmount > currentBalance) {
+        enqueueSnackbar("Expense exceeds wallet balance", { variant: 'error' });
+        return false;
       }
-      else {
-        enqueueSnackbar("Fill all details",{variant: 'error'})
-        return false
-      }
-    }
 
-    useEffect(() => {
-      localStorage.setItem("WalletBalance",JSON.stringify(balance))
-    },[balance])
+      const newExpense = {
+        title: title.trim(),
+        price: newExpenseAmount,
+        category,
+        date
+      };
 
-    useEffect(() => {
-      const savedExpenses = JSON.parse(localStorage.getItem("expenses")) || []
-      const finalExpenses = savedExpenses.reduce((acc,item) => acc + parseFloat(item.price),0)
-      setExpense(finalExpenses)
+      const existingExpenses = JSON.parse(localStorage.getItem("expenses")) || [];
+      existingExpenses.push(newExpense);
+      localStorage.setItem("expenses", JSON.stringify(existingExpenses));
 
-      const groupedExpenses = savedExpenses.reduce((acc,curr) => {
-        const existing = acc.find(item => item.category === curr.category)
-        const amount = parseFloat(curr.price) 
+      const newBalance = currentBalance - newExpenseAmount;
+      setBalance(newBalance);
+      localStorage.setItem("WalletBalance", JSON.stringify(newBalance));
 
-        if(existing) {
-          existing.price += amount
-        }else{
-          acc.push({ category: curr.category, price: amount });
-        }
-        return acc;
+      setFormdata({
+        title: "",
+        price: "",
+        selectedCategory: "",
+        selectedDate: ""
+      });
+
+      updateExpensesAndBalance();
+      return true;
+};
+
+
+    const updateExpensesAndBalance = () => {
+        const savedExpenses = JSON.parse(localStorage.getItem("expenses")) || [];
+        setIndExpenses(savedExpenses);
+
+        const total = savedExpenses.reduce((acc, item) => acc + parseFloat(item.price), 0);
+        setTotExpenses(total);
+
+        const initialBalance = 5000;
+        const updatedBalance = initialBalance - total;
+        setBalance(updatedBalance);
+        localStorage.setItem("WalletBalance", JSON.stringify(updatedBalance));
+
+        const groupedExpenses = savedExpenses.reduce((acc, curr) => {
+          const existing = acc.find(item => item.category === curr.category);
+          const amount = parseFloat(curr.price);
+          if (existing) {
+            existing.price += amount;
+          } else {
+            acc.push({ category: curr.category, price: amount });
+          }
+          return acc;
         }, []);
         setExpenseList(groupedExpenses);
-       },[expense])
+      };
+
+    useEffect(() => {
+      const storedBalance = JSON.parse(localStorage.getItem("WalletBalance"));
+      if (storedBalance === null || isNaN(storedBalance)) {
+        localStorage.setItem("WalletBalance", JSON.stringify(5000));
+        setBalance(5000);
+      } else {
+        setBalance(storedBalance);
+      }
+    }, []);
+
+
+   useEffect(() => {
+      updateExpensesAndBalance()
+    }, []);
+
+
 
 
 
@@ -140,7 +172,7 @@ export default function Content() {
                 
                                     {/* {Add Expense} */}
                 <div className='statCard'>
-                    <h2>Expense: <span style={{color:'#F4BB4A'}}>₹{expense}</span></h2>
+                    <h2>Expense: <span style={{color:'#F4BB4A'}}>₹{totExpenses}</span></h2>
                     <button 
                         className='btn' 
                         style={{
@@ -183,12 +215,17 @@ export default function Content() {
 
                 <div className='recent'>
                   <h2>Recent Transaction </h2>
-                    <Transaction/>
+                    <Transaction
+                      expenses={indExpense}
+                      onUpdate={() => updateExpensesAndBalance()}
+                    />
+
                 </div>
 
                 <div className='top-expenses'  >
                   <h2>Top Expenses</h2>     
-                     <CategoryBarChart/>
+                     <CategoryBarChart
+                      expenses = {indExpense}/>
              
                 </div>
 

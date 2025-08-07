@@ -186,3 +186,15 @@ h1 {
   gap: 2rem; 
   justify-content: space-between;
 } */
+
+@media screen and (max-width: 768px) {
+  .recent {
+    margin-right: 1rem;
+    width: 75%;
+  }
+  .bottom-card {
+    flex-direction: column;
+    margin-right: 0;
+    align-items: center; /* Optional: center items on small screen */
+  }
+}

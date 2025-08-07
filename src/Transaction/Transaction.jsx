@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import { FaUtensils, FaFilm, FaPlane, FaQuestion } from 'react-icons/fa';
 
-export default function Transaction() {
+export default function Transaction({expenses,onUpdate}) {
   const [transactions, setTransactions] = useState([]);
   const [editModal, setEditModal] = useState(false);
   const [editData, setEditData] = useState({
@@ -19,10 +19,10 @@ export default function Transaction() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
-  useEffect(() => {
-    const savedExpenses = JSON.parse(localStorage.getItem("expenses")) || [];
-    setTransactions(savedExpenses);
-  }, []);
+useEffect(() => {
+  setTransactions(expenses);
+}, [expenses]);
+
 
   useEffect(() => {
     setCurrentPage(1);
@@ -33,6 +33,7 @@ export default function Transaction() {
     updated.splice(indexToDelete, 1);
     localStorage.setItem("expenses", JSON.stringify(updated));
     setTransactions(updated);
+    onUpdate && onUpdate(updated)
   };
 
   const openEditModal = (tx, index) => {
@@ -52,6 +53,7 @@ export default function Transaction() {
     setTransactions(updatedTransactions);
     localStorage.setItem("expenses", JSON.stringify(updatedTransactions));
     setEditModal(false);
+    onUpdate && onUpdate(updatedTransactions);
   };
 
   const getCategoryIcon = (category) => {
@@ -88,7 +90,7 @@ export default function Transaction() {
 
   return (
     <div className="transaction-container">
-      {transactions.length === 0 ? (
+      {expenses.length === 0 ? (
         <p className="no-transactions">No transactions added.</p>
       ) : (
         <ul className="transaction-list">
