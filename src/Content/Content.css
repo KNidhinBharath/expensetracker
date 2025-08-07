@@ -1,6 +1,6 @@
 .main-body {
     background-color: #3B3B3B;
-    padding: 30px 30px;
+    padding: 1rem;
     color: white;
     border-radius: 3px;
 }
@@ -77,6 +77,7 @@ h1 {
 
 /* Modal container */
 .dialogContainer {
+    
   position: absolute;
   top: 50%;
   left: 50%;
@@ -126,6 +127,7 @@ h1 {
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1.5rem;
+  
 }
 
 .dialogbtns button {
@@ -134,9 +136,8 @@ h1 {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  background-color: #1976d2;
-  color: white;
   transition: background 0.2s ease-in-out;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) ;
 }
 
 .dialogbtns button:hover {
@@ -150,3 +151,38 @@ h1 {
 .dialogbtns button:last-child:hover {
   background-color: #888;
 }
+
+.bottom-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  
+  
+  flex-wrap: nowrap;
+  
+}
+
+.recent  {
+  display: flex ;
+  flex-direction: column;
+  width: 100%;
+  
+ 
+}
+
+
+.top-expenses {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* or min-width: 500px; */
+  max-width: 500px;
+}
+
+/* .bottom-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem; 
+  justify-content: space-between;
+} */

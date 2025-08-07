@@ -1,0 +1,151 @@
+.transaction-container {
+  background-color: #f1f1f1;
+  border-radius: 15px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 10px 10px;
+  
+}
+
+.transaction-item {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  
+}
+
+.transaction-list {
+  padding-left: 10px;
+}
+
+.transaction-item h4 {
+  margin: 0;
+  
+  color: #333;
+}
+
+.transaction-item p {
+  margin: 0.3rem 0;
+  color: #555;
+}
+
+.category {
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.transaction-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+}
+
+.edit-btn, .delete-btn {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.edit-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #388e3c;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.edit-form input,
+.edit-form select {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.dialogbtns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.dialogContainer {
+  background-color: #fff;
+  padding: 2rem;
+  max-width: 500px;
+  margin: auto;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  
+}
+
+.arrow-btn {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: background-color 0.2s ease;
+}
+
+.arrow-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.page-number {
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 10px;
+  background-color: #43967B;
+  border-radius: 8px;
+}

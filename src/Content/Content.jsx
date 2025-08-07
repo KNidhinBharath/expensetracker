@@ -2,9 +2,10 @@ import './Content.css'
 import { PieChart, Pie, Cell, Tooltip, Legend} from 'recharts'
 import { ResponsiveContainer } from 'recharts';
 import ReactModal from 'react-modal';
-import dayjs from 'dayjs';
 import { useState ,useEffect } from 'react';
 import { useSnackbar } from 'notistack'
+import Transaction from '../Transaction/Transaction';
+import CategoryBarChart from '../Barchart/CategoryBarChart';
 
 const Colors = ['#FF9304','#A000FF','#FDE006']
 
@@ -14,20 +15,24 @@ export default function Content() {
 
     const [isBalanceModal ,setBalanceModal] = useState(false)
     const [isExpenseModal , setExpenseModal] = useState(false)
-    const [selectedDate, setSelectedDate] = useState(dayjs())
-    const [selectedCategory, setSelectedCategory] = useState("")
     const [inputAmount,setInput] = useState("")
-    const [title,setTitle] = useState("")
-    const [price,setPrice] = useState("")
     const [expenseList,setExpenseList] = useState([])
-
+    const [expense,setExpense] = useState(0)
+    const {enqueueSnackbar} = useSnackbar()
     const [balance,setBalance] = useState(() => {
       const WalletBalance = localStorage.getItem("WalletBalance")
       return WalletBalance ? JSON.parse(WalletBalance) : "0";
     })
+    const [formData , setFormdata] = useState( 
+      {
+        title : "",
+        price : "",
+        selectedCategory : "",
+        selectedDate : ""
+      }
+    )
 
-    const [expense,setExpense] = useState(0)
-    const {enqueueSnackbar} = useSnackbar()
+    
 
     const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
         const RADIAN = Math.PI / 180;
@@ -39,6 +44,14 @@ export default function Content() {
             {`${(percent * 100).toFixed(0)}%`}
             </text>
         );
+    };
+
+    const handleChange = (e) => {
+          const { name, value } = e.target;
+          setFormdata((prev) => ({
+            ...prev,
+            [name]: value
+          }));
     };
 
     const addBalance = (inputAmount) => {
@@ -67,13 +80,14 @@ export default function Content() {
 
       if(title && price && category && date){
         localStorage.setItem("expenses",JSON.stringify(existingExpenses))
-
         const totalExpenses = existingExpenses.reduce((acc,item) => acc + parseFloat(item.price) , 0)
         setExpense(totalExpenses)
-        console.log(totalExpenses)
-        setTitle("")
-        setPrice("")
-        setSelectedCategory("")
+        setFormdata({
+          title : "",
+          price : "",
+          selectedCategory : "",
+          selectedDate : ""
+        })
         
         return true
       }
@@ -88,7 +102,7 @@ export default function Content() {
     },[balance])
 
     useEffect(() => {
-      const savedExpenses = JSON.parse(localStorage.getItem("expenses"))
+      const savedExpenses = JSON.parse(localStorage.getItem("expenses")) || []
       const finalExpenses = savedExpenses.reduce((acc,item) => acc + parseFloat(item.price),0)
       setExpense(finalExpenses)
 
@@ -136,13 +150,13 @@ export default function Content() {
                 </div>
 
                 <div className='chart-wrapper' >
-                    <ResponsiveContainer width="100%" height={250}>
-                            <PieChart width={239} height={677}>
+                    <ResponsiveContainer  width="100%" height="100%">
+                            <PieChart width={400} height={400}>
                                 <Pie
                                     data={expenseList}
                                     cx="50%"
                                     cy="50%"
-                                    outerRadius={100}
+                                    outerRadius={80}
                                     dataKey="price"
                                     nameKey="category"
                                     label = {renderCustomLabel}
@@ -162,9 +176,26 @@ export default function Content() {
                     </ResponsiveContainer>
                 </div>
            </div>
+                 
+                 
 
+          <div className='bottom-card'>
 
+                <div className='recent'>
+                  <h2>Recent Transaction </h2>
+                    <Transaction/>
+                </div>
 
+                <div className='top-expenses'  >
+                  <h2>Top Expenses</h2>     
+                     <CategoryBarChart/>
+             
+                </div>
+
+          </div>
+          
+
+          
 
                                {/* {Balance Modal} */}
 
@@ -224,9 +255,10 @@ export default function Content() {
               <input
                 id="title"
                 type="text"
-                value={title}
+                name='title'
+                value={formData.title}
                 placeholder='Title'
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={handleChange}
                 required
               />
 
@@ -234,17 +266,19 @@ export default function Content() {
               <input
                 id="price"
                 type="number"
-                value={price}
+                name='price'
+                value={formData.price}
                 placeholder='Price'
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={handleChange}
                 required
               />
 
               <label htmlFor="category">Select Category</label>
               <select
                 id="category"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                value={formData.selectedCategory}
+                name='selectedCategory'
+                onChange={handleChange}
                 required
               >
                 <option value="" disabled>Select Category</option>
@@ -257,27 +291,40 @@ export default function Content() {
               <input
                 id="date"
                 type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                name='selectedDate'
+                value={formData.selectedDate}
+                onChange={handleChange}
                 required
               />
             </div>
 
             <div className="dialogbtns">
               <button
+                style={{
+                  backgroundColor : "#F4BB4A",
+                  color:'white'
+                }
+          
+                }
                 onClick={() => {
                   const success = addExpense(
-                    title,
-                    price,
-                    selectedCategory,
-                    selectedDate
+                    formData.title,
+                    formData.price,
+                    formData.selectedCategory,
+                    formData.selectedDate
                   );
                   setExpenseModal(!success);
                 }}
               >
                 Add Expense
               </button>
-              <button onClick={() => setExpenseModal(false)}>Cancel</button>
+              <button
+                 onClick={() => setExpenseModal(false)}
+                 style={{
+                  color: 'black',
+                  backgroundColor : 'white'
+                 }}
+                 >Cancel</button>
             </div>
           </ReactModal>
     </div>
