@@ -271,7 +271,7 @@ export default function Content() {
                   onClick={() => {
                   const success = addBalance(inputAmount);
                   setBalanceModal(!success);
-                  }}>+ Add Income</button>
+                  }}>+ Add Balance</button>
                 <button onClick={() => setBalanceModal(false)}>Cancel</button>
               </div>
            </ReactModal>
