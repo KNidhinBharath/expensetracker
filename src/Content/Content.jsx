@@ -214,7 +214,7 @@ export default function Content() {
           <div className='bottom-card'>
 
                 <div className='recent'>
-                  <h2>Recent Transaction </h2>
+                  <h2>Recent Transactions </h2>
                     <Transactions
                       expenses={indExpense}
                       onUpdate={() => updateExpensesAndBalance()}
