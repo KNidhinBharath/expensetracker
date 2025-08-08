@@ -285,89 +285,96 @@ export default function Content() {
             isOpen={isExpenseModal}
             onRequestClose={() => setExpenseModal(false)}
             contentLabel="Add Expense"
-          >
-            <div className="dialogTitle">
-              <h2>Add Expense</h2>
-            </div>
-
-            <div className="dialogueContent">
-              <label htmlFor="title">Title</label>
-              <input
-                id="title"
-                type="text"
-                name="title"
-                value={formData.title}
-                placeholder='Title'
-                onChange={handleChange}
-                required
-              />
-
-              <label htmlFor="price">Price</label>
-              <input
-                id="price"
-                type="number"
-                name="price"
-                value={formData.price}
-                placeholder='Price'
-                onChange={handleChange}
-                required
-              />
-
-              <label htmlFor="category">Select Category</label>
-              <select
-                id="category"
-                value={formData.category}
-                name="category"
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Category</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Food">Food</option>
-                <option value="Travel">Travel</option>
-              </select>
-
-              <label htmlFor="date">Date</label>
-              <input
-                id="date"
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="dialogbtns">
-              <button
-               type="submit"
-                style={{
-                  backgroundColor : "#F4BB4A",
-                  color:'white'
+          > 
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); 
+                const success = addExpense(
+                  formData.title,
+                  formData.price,
+                  formData.category,
+                  formData.date 
+                );
+                if (success) {
+                  setExpenseModal(false);
                 }
-          
-                }
-                onClick={() => {
-                  const success = addExpense(
-                    formData.title,
-                    formData.price,
-                    formData.category,
-                    formData.selectedDate
-                  );
-                  setExpenseModal(!success);
-                }}
-              >
-                + Add Expense
-              </button>
-              <button
-                 
-                 onClick={() => setExpenseModal(false)}
-                 style={{
-                  color: 'black',
-                  backgroundColor : 'white'
-                 }}
-                 >Cancel</button>
-            </div>
+              }}
+            >
+              <div className="dialogTitle">
+                <h2>Add Expense</h2>
+              </div>
+
+              <div className="dialogueContent">
+                <label htmlFor="title">Title</label>
+                <input
+                  id="title"
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  placeholder="Title"
+                  onChange={handleChange}
+                  required
+                />
+
+                <label htmlFor="price">Price</label>
+                <input
+                  id="price"
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  placeholder="Price"
+                  onChange={handleChange}
+                  required
+                />
+
+                <label htmlFor="category">Select Category</label>
+                <select
+                  id="category"
+                  value={formData.category}
+                  name="category"
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled>Select Category</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Food">Food</option>
+                  <option value="Travel">Travel</option>
+                </select>
+
+                <label htmlFor="date">Date</label>
+                <input
+                  id="date"
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="dialogbtns">
+                <button
+                  type="submit"
+                  style={{
+                    backgroundColor: "#F4BB4A",
+                    color: "white"
+                  }}
+                >
+                  + Add Expense
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setExpenseModal(false)}
+                  style={{
+                    color: "black",
+                    backgroundColor: "white"
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </ReactModal>
+
     </div>
   )}
