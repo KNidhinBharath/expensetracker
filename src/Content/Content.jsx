@@ -243,9 +243,10 @@ export default function Content() {
               contentLabel = "Add Balance"
               overlayClassName="dialogOverlay"
             >
-              <h2>Add Balance</h2>
+              
               <div className='dialogueContent'>
-                
+                <h2 style={{ font: 'black' }}
+                  >Add Balance</h2>
                   <input
                     autoFocus
                     value={inputAmount}

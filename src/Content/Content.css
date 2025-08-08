@@ -106,6 +106,10 @@ h1 {
   gap: 1rem;
 }
 
+.dialogueContent h2 {
+  color: black;
+}
+
 .dialogueContent label {
   font-weight: 600;
   margin-bottom: 0.3rem;
