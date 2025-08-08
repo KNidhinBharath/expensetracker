@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './Transaction.css';
+import './Transactions.css';
 import ReactModal from 'react-modal';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import { FaUtensils, FaFilm, FaPlane, FaQuestion } from 'react-icons/fa';
 
-export default function Transaction({expenses,onUpdate}) {
+export default function Transactions({expenses,onUpdate}) {
   const [transactions, setTransactions] = useState([]);
   const [editModal, setEditModal] = useState(false);
   const [editData, setEditData] = useState({

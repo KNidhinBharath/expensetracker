@@ -4,7 +4,7 @@ import { ResponsiveContainer } from 'recharts';
 import ReactModal from 'react-modal';
 import { useState ,useEffect } from 'react';
 import { useSnackbar } from 'notistack'
-import Transaction from '../Transaction/Transaction';
+import Transactions from '../Transaction/Transactions';
 import CategoryBarChart from '../Barchart/CategoryBarChart';
 
 const Colors = ['#FF9304','#A000FF','#FDE006']
@@ -215,7 +215,7 @@ export default function Content() {
 
                 <div className='recent'>
                   <h2>Recent Transaction </h2>
-                    <Transaction
+                    <Transactions
                       expenses={indExpense}
                       onUpdate={() => updateExpensesAndBalance()}
                     />
@@ -287,6 +287,7 @@ export default function Content() {
             contentLabel="Add Expense"
           > 
             <form
+              name="Transactions"
               onSubmit={(e) => {
                 e.preventDefault(); 
                 const success = addExpense(
